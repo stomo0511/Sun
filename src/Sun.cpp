@@ -79,4 +79,40 @@ int main( int argc, char* argv[] )
 
 // 時角
 //	h=(JST-12)π/12+標準子午線からの経度差+均時差(Eq)
+
+	//	日の出時刻：　t1　[単位： 時]
+	//	　　t = acos(-tan(δ)tan(φ))
+	//	　　T1 = (-t + 180)/15
+	//	　　t1 = T1 - (θ - 135)/15 - e
+	double t = acos( -tan(delta)*tan(latitude*M_PI/180.0) ); // [radian]
+	t *= 180.0/M_PI;  // [度]
+	double T1 = (-t + 180.0)/15.0;
+	double t1 = T1 - (longitude - 135.0)/15.0 - eq;
+
+	double m;
+	cout << "日の出:" << floor(t1) << "時";
+	m = t1 - floor(t1);
+	cout << floor(m * 60.0) << "分, ";
+
+	double sA = cos(delta)*sin(t1-9.0);
+	double cA = -sin(delta)/cos(latitude*M_PI/180.0);
+	double A = atan2(sA,cA) + M_PI;
+	cout << "日の出方位角：" << A*180.0/M_PI << endl;
+
+	//	日の入時刻：　t2　[単位： 時]
+	//	　　T2 = ( t + 180)/15
+	//	　　t2 = T2 - (θ - 135)/15 - e
+	double T2 = (t + 180.0)/15.0;
+	double t2 = T2 - (longitude - 135.0)/15.0 - eq;
+	cout << "日の入:" << floor(t2) << "時";
+	m = t2 - floor(t2);
+	cout << floor(m * 60.0) << "分, ";
+
+	sA = cos(delta)*sin(t2-9.0);
+	A = atan2(sA,cA) + M_PI;
+	cout << "日の入方位角：" << A*180.0/M_PI << endl << endl;
+
+	// 日の出から日の入りまでのループ
+	int sr = (int)(floor(t1));
+	int ss = (int)(floor(t2));
 }
