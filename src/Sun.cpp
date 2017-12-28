@@ -68,7 +68,7 @@ int main( int argc, char* argv[] )
 	double eq = ap[0] + ap[1]*cos(th) + ap[2]*sin(th) + ap[3]*cos(2.0*th) + ap[4]*sin(2.0*th);
 	eq *= 12.0 / M_PI;
 
-	cout << "均時差 = " << eq*60.0 << endl;
+	cout << "均時差 = " << eq*60.0 << " [分]\n";
 
 //// 太陽距離
 //// r/r*=1/{1.000110+0.034221cos(θo)+0.001280sin(θo)+0.000719cos(2θo)+0.000077sin(2θo)}^0.5
@@ -76,9 +76,6 @@ int main( int argc, char* argv[] )
 //	double rr = 1.0 / sqrt( gm[0] + gm[1]*cos(th) + gm[2]*sin(th) + gm[3]*cos(2.0*th) + gm[4]*sin(2.0*th) );
 //
 //	cout << "太陽距離 = " << rr << " [天文単位]\n";
-
-// 時角
-//	h=(JST-12)π/12+標準子午線からの経度差+均時差(Eq)
 
 	//	日の出時刻：　t1　[単位： 時]
 	//	　　t = acos(-tan(δ)tan(φ))
@@ -115,4 +112,33 @@ int main( int argc, char* argv[] )
 	// 日の出から日の入りまでのループ
 	int sr = (int)(floor(t1));
 	int ss = (int)(floor(t2));
+
+	for (int i=sr-1; i<=ss+1; i++)
+	{
+		cout << "時間: " << i << " [時], ";
+
+// 時角
+//	h=(JST-12)π/12+標準子午線からの経度差+均時差(Eq)
+		double h = ((double)(i) - 12.0)*M_PI/12.0 + (longitude - 135.0) + eq;
+		cout << "時角 = " << h << ", ";
+//		h *= M_PI/180.0;           // [radian]
+
+// 太陽高度 α
+// α=arcsin{sin(φ)sin(δ)+cos(φ)cos(δ)cos(h)}
+		double a = acos( sin(latitude*M_PI/180.0)*sin(delta) + cos(latitude*M_PI/180.0)*cos(delta)*cos(h) ); // [radian]
+		cout << "高度 = " << a*180.0/M_PI << ", \n";
+
+//		方位角：　A（北 = 0, 東 = 90, 南 = 180, 西 = 270°）
+//		　　sinA = cos(δ)sin(t)/cos(h)
+//		　　cosA = (sin(h)sin(φ) - sin(δ))/cos(h)/cos(φ)
+//		　　A = atan2(sinA, cosA) + π
+//		double sA = cos(delta)*sin(t) / cos(h);
+//		double cA = (sin(h)*sin(latitude*M_PI/180.0) - sin(delta)) / cos(h) / cos(latitude*M_PI/180.0);
+//		double A;
+//		if (sA > 0)
+//			A = M_PI/2.0 - atan2(cA,sA);  // [radian]
+//		else
+//			A = -M_PI/2.0 - atan2(cA,sA);
+//		cout << "方位角 = " << A*180.0/M_PI << endl;
+	}
 }
