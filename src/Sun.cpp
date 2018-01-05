@@ -47,8 +47,12 @@ int main( int argc, char* argv[] )
 	const int day   = atoi(argv[3]);
 
 	// 三澤農場のセンサ位置
-	double longitude = 138.455; // 東経
-	double latitude = 35.786;   // 北緯
+//	double longitude = 138.455; // 東経
+//	double latitude = 35.786;   // 北緯
+
+	// 甲府市
+	double longitude = 138.56833; // 東経
+	double latitude = 35.66231;   // 北緯
 
 	cout << "東経: " << longitude << ", 北緯: " << latitude << endl;
 
