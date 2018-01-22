@@ -65,23 +65,15 @@ int main( int argc, char* argv[] )
 	double eps = 12.3901 + 0.0172*( n + M / 360.0 );   // 度 (21);
 	double v = M + 1.914*sin( M*rad ) + 0.02*sin( 2.0*M*rad );     // 度 (22)
 
-	///////////////
-	double th = 2.0 * M_PI * (double)(GetDays( year, month, day) +0.5) / (365.0 + leap(year));
-	double ap[6] = { 0.0072, -0.0528, -0.0012, -0.1229, -0.1565, -0.0041 };
-	double eq = ap[0]*cos(th) + ap[1]*cos(2.0*th) + ap[2]*cos(3.0*th) + ap[3]*sin(th) + ap[4]*sin(2.0*th) + ap[5]*sin(3.0*th);
-	///////////////
-
 	double veps = ( v + eps )*rad; // radian
-	//double Et2 = atan( 0.043*sin( 2.0*veps ) / (1.0 - 0.043*cos( 2.0*veps )) ) / rad;  // 度 (24)
-	//double Et = (M-v) - Et2;   // 度 (20)
-
-	double Et = eq;
-	cout << "均時差 = " << Et << " 度\n";
+	double Et2 = atan( 0.043*sin( 2.0*veps ) / (1.0 - 0.043*cos( 2.0*veps )) ) / rad;  // 度 (24)
+	double Et = (M-v) - Et2;   // 度 (20)
+//	cout << "均時差 = " << Et << " 度\n";
 
 
 	double sindlt = cos(veps)*sin(dlt0);  // (19)
 	double cosdlt = sqrt( 1.0 - sindlt*sindlt );
-	cout << "太陽赤緯 = " << asin(sindlt)/rad << " 度\n";
+//	cout << "太陽赤緯 = " << asin(sindlt)/rad << " 度\n";
 
 	double phirad = latitude*rad;
 	for (int i=0; i<24; i++)
